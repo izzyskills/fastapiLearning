@@ -22,6 +22,7 @@ items = {
     0: Item(name="Nails", price=1.99 , count =100 ,id=2 ,category=Category.CONSUMABLES)
 }
 
+
 Selection = dict[str,str|int|float|Category|None]
 
 
@@ -61,7 +62,6 @@ def add_item(item:Item)->dict[str,Item]:
     return {"added":item}
 
 @app.put("/items/{item_id}")
-
 def update(item_id:int,name:str |None = None, price:float |None = None, count:int|None=None, category:Category | None=None )->dict[str,Item]:
     if item.id not in items:
         HTTPEception(status_code=400,details=f"Item with {item.id} already exists.")
@@ -79,7 +79,13 @@ def update(item_id:int,name:str |None = None, price:float |None = None, count:in
 
     return {"updated":item}
 
-
+@app.get("/category/{category}")
+def quuery_item_by_category(category:Category)->dict[str,Selection]:
+    selection = [items for items in items.values() if item.category == category]
+    return {
+            "query": {"category":category},
+        "selection":selection
+    }:
 
 
 
