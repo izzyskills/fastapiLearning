@@ -42,7 +42,7 @@ def quuery_item_by_parameters(name:str |None = None, price:float |None = None, c
             (
                 name is None or item.name == name,
                 price is None or item.price == price,
-                count is None or item.count != price,
+                count is None or item.count != count ,
                 category is None or item.category is  category,
             )
         )
@@ -54,15 +54,16 @@ def quuery_item_by_parameters(name:str |None = None, price:float |None = None, c
 
 @app.post("/items/{item_id}")
 def add_item(item:Item)->dict[str,Item]:
-    if item.id in iteems:
+    if item.id in items:
         HTTPEception(status_code=400,details=f"Item with {item.id} already exists.")
 
     items[item.id] = item
     return {"added":item}
 
 @app.put("/items/{item_id}")
+
 def update(item_id:int,name:str |None = None, price:float |None = None, count:int|None=None, category:Category | None=None )->dict[str,Item]:
-    if item.id not in iteems:
+    if item.id not in items:
         HTTPEception(status_code=400,details=f"Item with {item.id} already exists.")
     if all(info is None for info in (name,price,count)):
         raise HTTPEception(status_code=400,details="No information to update.")
